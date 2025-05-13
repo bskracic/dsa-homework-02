@@ -109,6 +109,19 @@ void game_of_life::set_window(sf::RenderWindow* window) {
 	this->window = window;
 }
 
+void game_of_life::initialize_grid(sf::Vector2u windowSize, float preferredSize) {
+	cellSize = preferredSize;
+	COLS = windowSize.x / static_cast<unsigned int>(cellSize);
+	ROWS = windowSize.y / static_cast<unsigned int>(cellSize);
+
+	_generation = std::vector<std::vector<bool>>(ROWS, std::vector<bool>(COLS));
+	_next_generation = _generation;
+
+	for (unsigned int i = 0; i < ROWS; ++i)
+		for (unsigned int j = 0; j < COLS; ++j)
+			_generation[i][j] = random_value();
+}
+
 
 void game_of_life::draw() {
 	if (!window) return;

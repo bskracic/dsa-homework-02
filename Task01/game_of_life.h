@@ -8,23 +8,24 @@
 
 class game_of_life {
 private:
-    static const unsigned int COLS = 40;
-    static const unsigned int ROWS = 30;
+    unsigned int COLS = 0;
+    unsigned int ROWS = 0;
+    float cellSize = 20.f;
 
-    bool _generation[ROWS][COLS];
-    bool _next_generation[ROWS][COLS];
+    std::vector<std::vector<bool>> _generation;
+    std::vector<std::vector<bool>> _next_generation;
 
     sf::RenderWindow* window = nullptr; // pointer to window
-    float cellSize = 20.f; // pixels per cell
 
     bool random_value();
     bool cell_taken(int i, int j);
 
 public:
     game_of_life();
-    void set_window(sf::RenderWindow* window); // assign the window
+    void set_window(sf::RenderWindow* window); 
+    void initialize_grid(sf::Vector2u windowSize, float preferredSize = 20.f);
     void next_generation();
-    void draw(); // will now draw rectangles
+    void draw(); 
 };
 
 #endif

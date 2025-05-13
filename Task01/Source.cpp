@@ -4,11 +4,13 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "Game of Life");
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game of Life");
     window.setFramerateLimit(10); // slows down generations
 
     game_of_life game;
-    game.set_window(&window); // assign window to game logic
+    game.set_window(&window);
+    game.initialize_grid(window.getSize(), 20.f);  
+
 
     while (window.isOpen())
     {
