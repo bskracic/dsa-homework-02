@@ -1,21 +1,18 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include "GameOfLife.h"
+using namespace std;
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+int main() {
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+    srand(time(nullptr));
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    sf::RenderWindow window(sf::VideoMode({ 1200, 800 }), "Game of Life");
+
+    GameOfLife game(&window);
+    game.draw();
+
 }
