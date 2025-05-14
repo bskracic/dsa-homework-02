@@ -2,10 +2,14 @@
 #include "game_of_life.h"
 #include <optional>
 
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game of Life");
-    window.setFramerateLimit(10); // slows down generations
+
+
+
+    window.setFramerateLimit(10); 
 
     game_of_life game;
     game.set_window(&window);
@@ -21,8 +25,8 @@ int main()
         }
 
         window.clear();
-        game.draw();           // draw current generation
-        game.next_generation(); // compute next generation
+        game.draw();           
+        game.next_generation();
         window.display();
     }
 

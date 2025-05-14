@@ -109,10 +109,21 @@ void game_of_life::set_window(sf::RenderWindow* window) {
 	this->window = window;
 }
 
-void game_of_life::initialize_grid(sf::Vector2u windowSize, float preferredSize) {
+void game_of_life::initialize_grid(sf::Vector2u windowSize, float preferredSize)
+{
 	cellSize = preferredSize;
-	COLS = windowSize.x / static_cast<unsigned int>(cellSize);
-	ROWS = windowSize.y / static_cast<unsigned int>(cellSize);
+
+	float marginX = windowSize.x * 0.05f; 
+	float marginY = windowSize.y * 0.05f; 
+
+	float availableWidth = windowSize.x - 2 * marginX;
+	float availableHeight = windowSize.y - 2 * marginY;
+
+	COLS = availableWidth / cellSize;
+	ROWS = availableHeight / cellSize;
+
+	offsetX = marginX;
+	offsetY = marginY;
 
 	_generation = std::vector<std::vector<bool>>(ROWS, std::vector<bool>(COLS));
 	_next_generation = _generation;
@@ -123,19 +134,25 @@ void game_of_life::initialize_grid(sf::Vector2u windowSize, float preferredSize)
 }
 
 
+
 void game_of_life::draw() {
 	if (!window) return;
 
 	for (int row = 0; row < ROWS; ++row) {
 		for (int col = 0; col < COLS; ++col) {
 			sf::RectangleShape cell;
-			cell.setSize(sf::Vector2f(cellSize - 1, cellSize - 1)); // spacing between cells
-			cell.setPosition({ col * cellSize, row * cellSize });
+			cell.setSize(sf::Vector2f(cellSize - 1, cellSize - 1));
+			/*cell.setPosition({ col * cellSize, row * cellSize });*/
+			cell.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
+
+			cell.setOutlineThickness(1);
+			cell.setOutlineColor(sf::Color(40, 40, 40)); 
 
 			if (_generation[row][col])
-				cell.setFillColor(sf::Color::Green);  // alive
+				cell.setFillColor(sf::Color(0, 255, 100));  
 			else
-				cell.setFillColor(sf::Color(30, 30, 30)); // dead
+				cell.setFillColor(sf::Color(15, 15, 20));   
+
 
 			window->draw(cell);
 		}

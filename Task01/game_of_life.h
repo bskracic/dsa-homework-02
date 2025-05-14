@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 
+
 class game_of_life {
 private:
     unsigned int COLS = 0;
@@ -15,10 +16,13 @@ private:
     std::vector<std::vector<bool>> _generation;
     std::vector<std::vector<bool>> _next_generation;
 
-    sf::RenderWindow* window = nullptr; // pointer to window
+    sf::RenderWindow* window = nullptr; 
 
     bool random_value();
     bool cell_taken(int i, int j);
+    float offsetX = 0.f;
+    float offsetY = 0.f;
+
 
 public:
     game_of_life();
