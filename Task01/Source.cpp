@@ -1,21 +1,17 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
+#include <vector>
+#include <ctime>
+#include <iostream>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+const int MAX_CELLS = 100000;
+const unsigned int WINDOW_W = 800;
+const unsigned int WINDOW_H = 600;
+const double UPDATE_INTERVAL = 2.0; 
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+int main() {
+    std::srand((std::time(nullptr)));
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    int gridW, gridH;
+
+    return 0;
 }
