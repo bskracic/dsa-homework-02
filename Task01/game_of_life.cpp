@@ -132,6 +132,8 @@ void game_of_life::draw() {
 		}
 	}
 }
+
+
 // Original Draw without SFML:
 //void game_of_life::draw()
 //{
