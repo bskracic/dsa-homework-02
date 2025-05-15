@@ -22,7 +22,6 @@ private:
     bool cell_taken(int i, int j);
 
 
-
 public:
     game_of_life();
     void set_window(sf::RenderWindow* window); 
@@ -31,6 +30,8 @@ public:
 
     const unsigned int WINDOW_WIDTH = 1920;
     const unsigned int WINDOW_HEIGHT = 1080;
+    void reset();
+
 };
 
 #endif

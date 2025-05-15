@@ -5,40 +5,61 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game of Life");
-    window.setFramerateLimit(10);
+	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game of Life");
+	window.setFramerateLimit(10);
 
-    sf::Font font;
-    if (!font.openFromFile("C:/Windows/Fonts/consola.ttf")) {
-        std::cout << "Failed to load font\n";
-        return -1;
-    }
+	sf::Font font;
+	if (!font.openFromFile("C:/Windows/Fonts/consola.ttf")) {
+		std::cout << "Failed to load font\n";
+		return -1;
+	}
 
-    
-    sf::Text title(font, "Game of Life", 42);
-    title.setFillColor(sf::Color::White);
+	bool paused = false;
 
-    sf::FloatRect bounds = title.getLocalBounds();
-    title.setOrigin({ bounds.getCenter().x, 0.f });  
-    title.setPosition({ window.getSize().x / 2.f, 20.f });
+	sf::Text title(font, "Game of Life", 42);
+	title.setFillColor(sf::Color::White);
 
-    game_of_life game;
-    game.set_window(&window);
+	sf::FloatRect bounds = title.getLocalBounds();
+	title.setOrigin({ bounds.getCenter().x, 0.f });
+	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
-    while (window.isOpen())
-    {
-        while (const std::optional<sf::Event> event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+	game_of_life game;
+	game.set_window(&window);
 
-        window.clear();
-        window.draw(title);       
-        game.draw();
-        game.next_generation();
-        window.display();
-    }
+	while (window.isOpen())
+	{
+		while (const std::optional<sf::Event> event = window.pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+				window.close();
+			if (event->is<sf::Event::KeyPressed>()) {
+				const auto* key = event->getIf<sf::Event::KeyPressed>();
+				if (!key) continue;
 
-    return 0;
+				if (key->scancode == sf::Keyboard::Scan::P) {
+					paused = !paused;
+					std::cout << (paused ? "Paused\n" : "Resumed\n");
+				}
+				else if (key->scancode == sf::Keyboard::Scan::R) {
+					game.reset();
+					std::cout << "Grid reset\n";
+				}
+			}
+
+
+
+		}
+
+
+		window.clear();
+		window.draw(title);
+		game.draw();
+		if (!paused) {
+			game.next_generation();
+			window.display();
+		}
+	}
+
+
+	return 0;
 }

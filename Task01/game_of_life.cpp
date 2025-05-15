@@ -133,6 +133,12 @@ void game_of_life::draw() {
 	}
 }
 
+void game_of_life::reset() {
+	for (int row = 0; row < ROWS; ++row)
+		for (int col = 0; col < COLS; ++col)
+			_generation[row][col] = random_value();
+}
+
 
 // Original Draw without SFML:
 //void game_of_life::draw()
