@@ -10,9 +10,22 @@ int main()
 
 	sf::Font font;
 	if (!font.openFromFile("C:/Windows/Fonts/BAUHS93.TTF")) {
-		std::cout << "Failed to load font\n";
+		std::cout << "Failed to load font" << std::endl;
 		return -1;
 	}
+
+	sf::Texture backgroundTexture;
+	if (!backgroundTexture.loadFromFile("Resources/Neon_Purple.png")) {
+		std::cout << "Failed to load background texture"<<std::endl;
+		return -1;
+	}
+	sf::Sprite backgroundSprite(backgroundTexture);
+	backgroundSprite.setScale(sf::Vector2f(
+		window.getSize().x / static_cast<float>(backgroundTexture.getSize().x),
+		window.getSize().y / static_cast<float>(backgroundTexture.getSize().y)
+	));
+
+
 
 	bool paused = false;
 
@@ -47,10 +60,10 @@ int main()
 				}
 				else if (key->scancode == sf::Keyboard::Scan::R) {
 					game.reset();
-					std::cout << "Grid reset\n";
+					std::cout << "Grid reset" << std::endl;
 				}
 				else if (key->scancode == sf::Keyboard::Scan::Escape) {
-					std::cout << "Goodbye!\n";
+					std::cout << "Goodbye!" << std::endl;
 					window.close(); 
 				}
 			}
@@ -63,12 +76,23 @@ int main()
 		window.clear();
 		sf::RectangleShape headerBar;
 		headerBar.setSize(sf::Vector2f(window.getSize().x, 80));
-		headerBar.setFillColor(sf::Color(20, 20, 20)); 
+		headerBar.setFillColor(sf::Color(20, 20, 20));
+		window.draw(backgroundSprite);  
 		window.draw(headerBar);
 
 		window.draw(title);
 		game.draw(paused);
 		window.draw(instructions);
+		if (paused) {
+			sf::Text pausedText(font, "PAUSED", 48);
+			pausedText.setFillColor(sf::Color(255, 255, 255, 190));
+			sf::FloatRect bounds = pausedText.getLocalBounds();
+			pausedText.setOrigin(bounds.position + bounds.size / 2.f);
+			pausedText.setPosition({ window.getSize().x / 2.f, window.getSize().y / 2.f });
+
+
+			window.draw(pausedText);
+		}
 		if (!paused) {
 			game.next_generation();
 		}

@@ -121,15 +121,17 @@ void game_of_life::draw(bool  paused) {
 			sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
 			cell.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
 			cell.setOutlineThickness(1);
-			cell.setOutlineColor(sf::Color(40, 40, 40));
+			cell.setOutlineColor(sf::Color(40, 40, 40, 200));
+
 
 			if (_generation[row][col]) {
 				if (paused)
-					cell.setFillColor(sf::Color(80, 150, 80));  
+					cell.setFillColor(sf::Color(80, 170, 180));  
 				else
-					cell.setFillColor(sf::Color(0, 255, 100));  
+					cell.setFillColor(sf::Color(0, 200, 255));  
 			} else {
-				cell.setFillColor(sf::Color(15, 15, 20));  
+				cell.setFillColor(sf::Color(15, 15, 20, 200));  
+
 			}
 
 			window->draw(cell);
