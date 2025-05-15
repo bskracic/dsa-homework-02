@@ -23,6 +23,11 @@ int main()
 	title.setOrigin({ bounds.getCenter().x, 0.f });
 	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
+
+	sf::Text instructions(font, "P - Pause / Resume     R - Reset Grid     Esc - Exit", 24);
+	instructions.setFillColor(sf::Color(180, 180, 180));
+	instructions.setPosition({ 50.f, 80.f });
+
 	game_of_life game;
 	game.set_window(&window);
 
@@ -44,6 +49,9 @@ int main()
 					game.reset();
 					std::cout << "Grid reset\n";
 				}
+				else if (key->scancode == sf::Keyboard::Scan::Escape) {
+					window.close(); 
+				}
 			}
 
 
@@ -54,6 +62,7 @@ int main()
 		window.clear();
 		window.draw(title);
 		game.draw();
+		window.draw(instructions);
 		if (!paused) {
 			game.next_generation();
 			window.display();
