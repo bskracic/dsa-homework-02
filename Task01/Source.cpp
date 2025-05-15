@@ -140,6 +140,7 @@ int main()
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
+            // TODO: Detect mouse click. If cell dead - convert to alive, if alive - kill it. Convert coordinates of the click, correctly apply color
         }
 
         for (int y = 0; y < gridInitialH; ++y) {
@@ -171,6 +172,7 @@ int main()
         }
 
         grid.swap(nextGrid);
+
 
         // In Shizo Mode, change colors of alive cells every frame
         if (useShizoMode) {
