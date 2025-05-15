@@ -18,5 +18,16 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="game_of_life.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game_of_life.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+>>>>>>> 7833747 (DZ02)
   </ItemGroup>
 </Project>

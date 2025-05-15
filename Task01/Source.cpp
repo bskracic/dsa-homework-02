@@ -1,21 +1,23 @@
-#include <SFML/Graphics.hpp>
 
+#include <iostream>
+#include <string>
+#include <fstream>
+#include "game_of_life.h"
+using namespace std;
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    
+        game_of_life the_game;
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+        bool dalje;
+        do {
+            the_game.iscrtaj();
+            the_game.sljedeca_generacija();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+            cout << "Dalje (1/0): ";
+            cin >> dalje;
+        } while (dalje);
+
+        return 0;
     }
-}
+
