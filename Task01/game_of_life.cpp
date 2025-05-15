@@ -110,7 +110,7 @@ void game_of_life::set_window(sf::RenderWindow* window) {
 }
 
 
-void game_of_life::draw() {
+void game_of_life::draw(bool  paused) {
 	if (!window) return;
 
 	float offsetX = (WINDOW_WIDTH - COLS * cellSize) / 2.f;
@@ -123,10 +123,14 @@ void game_of_life::draw() {
 			cell.setOutlineThickness(1);
 			cell.setOutlineColor(sf::Color(40, 40, 40));
 
-			if (_generation[row][col])
-				cell.setFillColor(sf::Color(0, 255, 100));
-			else
-				cell.setFillColor(sf::Color(15, 15, 20));
+			if (_generation[row][col]) {
+				if (paused)
+					cell.setFillColor(sf::Color(80, 150, 80));  
+				else
+					cell.setFillColor(sf::Color(0, 255, 100));  
+			} else {
+				cell.setFillColor(sf::Color(15, 15, 20));  
+			}
 
 			window->draw(cell);
 		}
@@ -140,7 +144,8 @@ void game_of_life::reset() {
 }
 
 
-// Original Draw without SFML:
+// Original Draw without SFML for context:
+// 
 //void game_of_life::draw()
 //{
 //	Sleep(450);//added delay
