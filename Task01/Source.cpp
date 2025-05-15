@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <ctime>
 #include <iostream>
@@ -74,12 +75,23 @@ int main()
 
     bool useShizoMode = (std::tolower(shizoModeChoice) == 'y');
 
+    // sf::Music shizoSound;
+
     if (useShizoMode) {
         std::cout << "Shizo Mode enabled! Colors will flash rapidly.\n";
+
+        // if (!shizoSound.openFromFile("shizo_mode_music.wav")) {
+        //    std::cerr << "Failed to load soundtrack!\n";
+        //    return -1;
+        // }
+
+       // shizoSound.setLooping(true);
+       // shizoSound.play();
     }
     else {
         std::cout << "Using default white color for alive cells.\n";
     }
+
 
     int totalCells = gridInitialW * gridInitialH;
     std::vector<bool> grid(totalCells);
