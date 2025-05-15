@@ -13,7 +13,6 @@ int main()
 
     game_of_life game;
     game.set_window(&window);
-    game.initialize_grid(window.getSize(), 20.f);  
 
 
     while (window.isOpen())
