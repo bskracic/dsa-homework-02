@@ -7,7 +7,8 @@ enum class cellState {
     Dead,
     Alive,
     Dying,
-    Birthing
+    Birthing,
+    Sacrificing
 };
 
 struct cell {
@@ -25,9 +26,12 @@ struct cell {
         const sf::Texture& texMito,
         const sf::Texture& texApop,
         const sf::Texture& texMito2,
-        const sf::Texture& texApop2);
+        const sf::Texture& texApop2,
+        const sf::Texture& texSac1,
+        const sf::Texture& texSac2);
     void ded();
     void birth();
+    void sacrifice();
     void commitState();
     bool isAlive() const;
     bool isLogicAlive() const;
@@ -43,7 +47,7 @@ public:
     void commit_next_gen();
 
 private:
-    static const int MATRIX_SIZE = 5;
+    static const int MATRIX_SIZE = 10;
     float cell_size;
     std::vector<std::vector<bool>> nextAlive;
 
@@ -56,6 +60,8 @@ private:
     sf::Texture texApop;
     sf::Texture texMito2;
     sf::Texture texApop2;
+    sf::Texture texSac1;
+    sf::Texture texSac2;
 
     float passiveAnimTimer = 0.f;
     bool useAlt = false;

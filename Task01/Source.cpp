@@ -5,8 +5,8 @@
 #include <cstdlib>
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(sf::Vector2u{ 1000, 1000 }), "Game of Life");
-    float cell_size = 1000 / 5;
+    sf::RenderWindow window(sf::VideoMode(sf::Vector2u{ 1200, 1200 }), "Game of Life");
+    float cell_size = 1200 /10;
     gameOfLife gol(cell_size); //SIUUU
 
     bool prepared = false;

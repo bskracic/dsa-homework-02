@@ -23,7 +23,8 @@ void cell::setPos(float x, float y, float cell_size) {
 void cell::update(float dt,
     const sf::Texture& texAlive, const sf::Texture& texDead,
     const sf::Texture& texMito, const sf::Texture& texApop,
-    const sf::Texture& texMito2, const sf::Texture& texApop2) {
+    const sf::Texture& texMito2, const sf::Texture& texApop2,
+    const sf::Texture& texSac1, const sf::Texture& texSac2) {
     if (!isAnim) return;
 
     animTimer += dt;
@@ -51,6 +52,17 @@ void cell::update(float dt,
             isAnim = false;
         }
         break;
+    case cellState::Sacrificing:
+        if (animTimer < 0.5f)
+            sprite.setTexture(texSac1);
+        else if (animTimer < 1.0f)
+            sprite.setTexture(texSac2);
+        else {
+            sprite.setTexture(texDead);
+            state = cellState::Dead;
+            isAnim = false;
+        }
+        break;
     default:
         break;
     }
@@ -64,6 +76,12 @@ void cell::ded() {
 
 void cell::birth() {
     state = cellState::Birthing;
+    animTimer = 0.f;
+    isAnim = true;
+}
+
+void cell::sacrifice() {
+    state = cellState::Sacrificing;
     animTimer = 0.f;
     isAnim = true;
 }
@@ -90,8 +108,6 @@ bool cell::shouldDraw() const {
 
 gameOfLife::gameOfLife(float cs) : cell_size(cs) {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    sf::Clock phaseClock;
-    float phase_dur = 1.f;
 
     if (!texAlive.loadFromFile("sprites/s_cell_nobg.png"))
         std::cerr << "Failed to load alive texture\n";
@@ -107,6 +123,10 @@ gameOfLife::gameOfLife(float cs) : cell_size(cs) {
         std::cerr << "Failed to load mitosis texture\n";
     if (!texApop2.loadFromFile("sprites/s_cell_apoptosis_2_nobg.png"))
         std::cerr << "Failed to load mitosis texture\n";
+    if (!texSac1.loadFromFile("sprites/s_sacrifice_1.png"))
+        std::cerr << "Failed to load sacrifice texture\n";
+    if (!texSac2.loadFromFile("sprites/s_sacrifice_2.png"))
+        std::cerr << "Failed to load sacrifice texture\n";
 
     nextAlive.resize(MATRIX_SIZE, std::vector<bool>(MATRIX_SIZE, false));
 
@@ -127,7 +147,7 @@ gameOfLife::gameOfLife(float cs) : cell_size(cs) {
 void gameOfLife::update_state(float dt) {
     for (auto& row : matrix)
         for (auto& c : row)
-            c.update(dt, texAlive, texDead, texMito, texApop, texMito2, texApop2);
+            c.update(dt, texAlive, texDead, texMito, texApop, texMito2, texApop2, texSac1, texSac2);
     passiveAnimTimer += dt;
     if (passiveAnimTimer >= 0.5f) {
         passiveAnimTimer = 0.f;
@@ -197,7 +217,8 @@ void gameOfLife::prepare_next_gen() {
                 (!alive && neighbors == 3);
         }
     }
-
+    static const int dx[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
+    static const int dy[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
     // animate
     for (int y = 0; y < MATRIX_SIZE; ++y) {
         for (int x = 0; x < MATRIX_SIZE; ++x) {
@@ -205,7 +226,22 @@ void gameOfLife::prepare_next_gen() {
             bool willBeAlive = nextAlive[y][x];
 
             if (currentlyAlive && !willBeAlive) {
-                matrix[y][x].ded();
+                bool causesBirth = false;
+                
+                for (int i = 0; i < 8; ++i) {
+                    int nx = x + dx[i];
+                    int ny = y + dy[i];
+                    if (nx >= 0 && nx < MATRIX_SIZE && ny >= 0 && ny < MATRIX_SIZE) {
+                        if (!matrix[ny][nx].isLogicAlive() && nextAlive[ny][nx]) {
+                            causesBirth = true;
+                            break;
+                        }
+                    }
+                }
+                if (causesBirth)
+                    matrix[y][x].sacrifice();
+                else
+                    matrix[y][x].ded();
             }
             else if (!currentlyAlive && willBeAlive) {
                 // if cell born -> neighbour births it
