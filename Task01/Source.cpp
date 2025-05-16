@@ -27,7 +27,9 @@ int main()
 
 
 
-	bool paused = false;
+	bool paused = true;
+	bool stepOnce = false;
+
 
 	sf::Text title(font, "Game of Life", 50);
 	title.setFillColor(sf::Color::White);
@@ -37,7 +39,7 @@ int main()
 	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
 
-	sf::Text instructions(font, "P - Pause / Resume      R - Reset Grid      Esc - Exit", 26);
+	sf::Text instructions(font, "P - Play / Pause      N - Next Step      R - Reset Grid      Esc - Exit", 26);
 	instructions.setFillColor(sf::Color(180, 180, 180));
 	instructions.setPosition({ 160.f, 80.f });
 
@@ -66,6 +68,11 @@ int main()
 					std::cout << "Goodbye!" << std::endl;
 					window.close(); 
 				}
+				else if (key->scancode == sf::Keyboard::Scan::N) {
+					stepOnce = true;
+					std::cout << "Step forward" << std::endl;
+				}
+
 			}
 
 
@@ -91,11 +98,17 @@ int main()
 			pausedText.setPosition({ window.getSize().x / 2.f, window.getSize().y / 2.f });
 
 
-			window.draw(pausedText);
+			if (paused && !stepOnce) {
+				window.draw(pausedText);
+			}
+
 		}
-		if (!paused) {
+		if (!paused || stepOnce) {
 			game.next_generation();
+			stepOnce = false;
 		}
+
+
 		window.display();
 
 	}
