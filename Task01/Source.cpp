@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cctype>
+#include <filesystem> 
 
 const int MAX_CELLS = 99999;
 const unsigned int WINDOW_W = 800;
@@ -35,7 +36,7 @@ int countLiveNeighbors(int x, int y, int gridW, int gridH, const std::vector<boo
 }
 // Choose colors avoding bleak colors or black
 sf::Color generateBrightRandomColor() {
-    int r, g, b;
+    int r{}, g{}, b{};
     switch (std::rand() % 3) {
     case 0:
         r = 200 + std::rand() % 56;
@@ -76,17 +77,20 @@ int main()
     bool useShizoMode = (std::tolower(shizoModeChoice) == 'y');
 
     // sf::Music shizoSound;
+    // const std::string musicPath = "shizo_mode_music.ogg";
 
     if (useShizoMode) {
         std::cout << "Shizo Mode enabled! Colors will flash rapidly.\n";
 
-        // if (!shizoSound.openFromFile("shizo_mode_music.wav")) {
-        //    std::cerr << "Failed to load soundtrack!\n";
-        //    return -1;
+        // if (!shizoSound.openFromFile(musicPath))
+        // {
+        //    std::cerr << "Couldn't open " << std::filesystem::absolute(musicPath) << '\n';
+        //    // play without sound instead of stopping
         // }
-
-       // shizoSound.setLooping(true);
-       // shizoSound.play();
+        // else {
+        //    shizoSound.setLooping(true);
+        //    shizoSound.play();
+        // }
     }
     else {
         std::cout << "Using default white color for alive cells.\n";
