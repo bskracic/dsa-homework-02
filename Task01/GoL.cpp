@@ -131,9 +131,9 @@ gameOfLife::gameOfLife(float cs, int ms) : cell_size(cs) {
     this->matrix_size = ms;
     nextAlive.resize(matrix_size, std::vector<bool>(matrix_size, false));
 
-    for (int y = 0; y < ms; ++y) {
+    for (int y = 0; y < matrix_size; ++y) {
         std::vector<cell> row;
-        for (int x = 0; x < ms; ++x) {
+        for (int x = 0; x < matrix_size; ++x) {
             bool isAlive = (std::rand() % 100) < 25;
             cellState state = isAlive ? cellState::Alive : cellState::Dead;
             const sf::Texture& tex = isAlive ? texAlive : texDead;
