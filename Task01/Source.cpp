@@ -5,9 +5,11 @@
 #include <cstdlib>
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(sf::Vector2u{ 1200, 1200 }), "Game of Life");
-    float cell_size = 1200 /10;
-    gameOfLife gol(cell_size); //SIUUU
+    unsigned int window_size = 1500;
+    int matrix_size = 10;
+    sf::RenderWindow window(sf::VideoMode(sf::Vector2u{ window_size, window_size }), "Game of Life");
+    float cell_size = window_size / matrix_size;
+    gameOfLife gol(cell_size, matrix_size); //SIUUU
 
     bool prepared = false;
     bool committed = false;

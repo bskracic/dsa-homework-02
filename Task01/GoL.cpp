@@ -106,8 +106,8 @@ bool cell::shouldDraw() const {
 
 // abandon all hope, ye who enter here
 
-gameOfLife::gameOfLife(float cs) : cell_size(cs) {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+gameOfLife::gameOfLife(float cs, int ms) : cell_size(cs) {
+    std::srand((std::time(nullptr)));
 
     if (!texAlive.loadFromFile("sprites/s_cell_nobg.png"))
         std::cerr << "Failed to load alive texture\n";
@@ -128,11 +128,12 @@ gameOfLife::gameOfLife(float cs) : cell_size(cs) {
     if (!texSac2.loadFromFile("sprites/s_sacrifice_2.png"))
         std::cerr << "Failed to load sacrifice texture\n";
 
-    nextAlive.resize(MATRIX_SIZE, std::vector<bool>(MATRIX_SIZE, false));
+    this->matrix_size = ms;
+    nextAlive.resize(matrix_size, std::vector<bool>(matrix_size, false));
 
-    for (int y = 0; y < MATRIX_SIZE; ++y) {
+    for (int y = 0; y < ms; ++y) {
         std::vector<cell> row;
-        for (int x = 0; x < MATRIX_SIZE; ++x) {
+        for (int x = 0; x < ms; ++x) {
             bool isAlive = (std::rand() % 100) < 25;
             cellState state = isAlive ? cellState::Alive : cellState::Dead;
             const sf::Texture& tex = isAlive ? texAlive : texDead;
@@ -179,7 +180,7 @@ int gameOfLife::countAliveNeighbors(int x, int y) const {
         int nx = x + dx[i];
         int ny = y + dy[i];
 
-        if (nx >= 0 && nx < MATRIX_SIZE && ny >= 0 && ny < MATRIX_SIZE) {
+        if (nx >= 0 && nx < matrix_size && ny >= 0 && ny < matrix_size) {
             if (matrix[ny][nx].isAlive()) {  // was matrix[nx][ny]
                 count++;
             }
@@ -190,7 +191,7 @@ int gameOfLife::countAliveNeighbors(int x, int y) const {
 
 int gameOfLife::get_Msize()
 {
-    return MATRIX_SIZE;
+    return matrix_size;
 }
 
 //the rothschilds have paid this function not to work
@@ -207,8 +208,8 @@ void gameOfLife::prepare_next_gen() {
     }*/
 
     // next state
-    for (int y = 0; y < MATRIX_SIZE; ++y) {
-        for (int x = 0; x < MATRIX_SIZE; ++x) {
+    for (int y = 0; y < matrix_size; ++y) {
+        for (int x = 0; x < matrix_size; ++x) {
             int neighbors = countAliveNeighbors(x, y);
             bool alive = matrix[y][x].isLogicAlive();
 
@@ -220,8 +221,8 @@ void gameOfLife::prepare_next_gen() {
     static const int dx[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
     static const int dy[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
     // animate
-    for (int y = 0; y < MATRIX_SIZE; ++y) {
-        for (int x = 0; x < MATRIX_SIZE; ++x) {
+    for (int y = 0; y < matrix_size; ++y) {
+        for (int x = 0; x < matrix_size; ++x) {
             bool currentlyAlive = matrix[y][x].isLogicAlive();
             bool willBeAlive = nextAlive[y][x];
 
@@ -231,7 +232,7 @@ void gameOfLife::prepare_next_gen() {
                 for (int i = 0; i < 8; ++i) {
                     int nx = x + dx[i];
                     int ny = y + dy[i];
-                    if (nx >= 0 && nx < MATRIX_SIZE && ny >= 0 && ny < MATRIX_SIZE) {
+                    if (nx >= 0 && nx < matrix_size && ny >= 0 && ny < matrix_size) {
                         if (!matrix[ny][nx].isLogicAlive() && nextAlive[ny][nx]) {
                             causesBirth = true;
                             break;
@@ -255,7 +256,7 @@ void gameOfLife::prepare_next_gen() {
                 for (auto [dx, dy] : directions) {
                     int nx = x + dx;
                     int ny = y + dy;
-                    if (nx >= 0 && nx < MATRIX_SIZE && ny >= 0 && ny < MATRIX_SIZE &&
+                    if (nx >= 0 && nx < matrix_size && ny >= 0 && ny < matrix_size &&
                         matrix[ny][nx].isLogicAlive()) {
                         matrix[ny][nx].birth();  // show mitosis on the parent
                         break;
@@ -267,8 +268,8 @@ void gameOfLife::prepare_next_gen() {
 }
 
 void gameOfLife::commit_next_gen() {
-    for (int y = 0; y < MATRIX_SIZE; ++y) {
-        for (int x = 0; x < MATRIX_SIZE; ++x) {
+    for (int y = 0; y < matrix_size; ++y) {
+        for (int x = 0; x < matrix_size; ++x) {
             cell& c = matrix[y][x];
             c.commitState();
 

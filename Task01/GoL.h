@@ -40,14 +40,14 @@ struct cell {
 
 class gameOfLife : public sf::Drawable {
 public:
-    gameOfLife(float cell_size);
+    gameOfLife(float cell_size, int matrix_size);
     void update_state(float dt);
     int get_Msize();
     void prepare_next_gen();
     void commit_next_gen();
 
 private:
-    static const int MATRIX_SIZE = 10;
+    int matrix_size;
     float cell_size;
     std::vector<std::vector<bool>> nextAlive;
 
