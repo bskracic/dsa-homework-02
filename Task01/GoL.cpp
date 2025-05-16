@@ -157,7 +157,7 @@ void gameOfLife::update_state(float dt) {
         for (auto& row : matrix) {
             for (auto& c : row) {
                 if (c.state == cellState::Alive && !c.isAnim) {
-                    c.sprite.setTexture(useAlt ? texAliveAlt : texAlive); // curse me for being fucking retarded enough to do this shite
+                    c.sprite.setTexture(useAlt ? texAliveAlt : texAlive);
                 }
             }
         }
@@ -181,7 +181,7 @@ int gameOfLife::countAliveNeighbors(int x, int y) const {
         int ny = y + dy[i];
 
         if (nx >= 0 && nx < matrix_size && ny >= 0 && ny < matrix_size) {
-            if (matrix[ny][nx].isAlive()) {  // was matrix[nx][ny]
+            if (matrix[ny][nx].isAlive()) { 
                 count++;
             }
         }
@@ -194,14 +194,14 @@ int gameOfLife::get_Msize()
     return matrix_size;
 }
 
-//the rothschilds have paid this function not to work
+//this man, man
 void gameOfLife::prepare_next_gen() {
     static std::mt19937 rng(std::random_device{}());
 
     // print matrix :: for debug only
     /*std::cout << "\nGrid State:\n";
-    for (int y = 0; y < MATRIX_SIZE; ++y) {
-        for (int x = 0; x < MATRIX_SIZE; ++x) {
+    for (int y = 0; y < matrix_size; ++y) {
+        for (int x = 0; x < matrix_size; ++x) {
             std::cout << (matrix[y][x].isLogicAlive() ? "1 " : "0 ");
         }
         std::cout << "\n";
