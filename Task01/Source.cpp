@@ -22,7 +22,7 @@ void setup_ui(sf::Text& title, sf::Text& instructions, sf::Font& font, sf::Rende
 	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
 	instructions.setFont(font);
-	instructions.setString(" P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      L - Light/Dark Mode      M - Mute      Esc - Exit");
+	instructions.setString("P - Play / Pause      N - Next Step      R - Reset Grid      I - Toggle Icon Mode      L - Toggle Light/Dark Mode      M - Mute/Unmute      Esc - Exit");
 	instructions.setCharacterSize(26);
 	instructions.setPosition({ 180.f, 80.f });
 }
