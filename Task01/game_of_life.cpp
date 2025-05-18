@@ -115,6 +115,11 @@ void game_of_life::set_dead_cell_texture(sf::Texture* texture) {
 	deadCellTexture = texture;
 }
 
+void game_of_life::set_alt_cell_texture(sf::Texture* texture) {
+	altCellTexture = texture;
+}
+
+
 
 void game_of_life::toggle_icon_mode() {
 	useIcons = !useIcons;
@@ -136,13 +141,20 @@ void game_of_life::draw(bool  paused) {
 
 
 			if (_generation[row][col]) {
-				if (useIcons && cellTexture) {
-					sf::Sprite sprite(*cellTexture);
+				if (useIcons && cellTexture && altCellTexture) {
+					// Alternate between two live cell icons Falcon and TIE Fighter
+					sf::Texture* selectedTexture = ((row + col) % 2 == 0) ? cellTexture : altCellTexture;
+
+					sf::Sprite sprite(*selectedTexture);
 					sprite.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
-					sprite.setScale({ cellSize / cellTexture->getSize().x, cellSize / cellTexture->getSize().y });
+					sprite.setScale({
+						cellSize / selectedTexture->getSize().x,
+						cellSize / selectedTexture->getSize().y
+						});
 					window->draw(sprite);
 				}
 				else {
+					// back to colored square for live cell
 					cell.setFillColor(paused ? sf::Color(80, 170, 180) : sf::Color(0, 200, 255));
 					window->draw(cell);
 				}
@@ -164,57 +176,7 @@ void game_of_life::draw(bool  paused) {
 	}
 }
 
-//void game_of_life::draw(bool  paused) {
-//	if (!window) return;
-//
-//	float offsetX = (WINDOW_WIDTH - COLS * cellSize) / 2.f;
-//	float offsetY = (WINDOW_HEIGHT - ROWS * cellSize) / 2.f;
-//
-//	for (int row = 0; row < ROWS; ++row) {
-//		for (int col = 0; col < COLS; ++col) {
-//			sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
-//			cell.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
-//			cell.setOutlineThickness(1);
-//			cell.setOutlineColor(sf::Color(40, 40, 40, 200));
-//
-//
-//			if (_generation[row][col]) {
-//				if (cellTexture) {
-//					sf::Sprite sprite(*cellTexture);
-//					sprite.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
-//					sprite.setScale({ cellSize / cellTexture->getSize().x, cellSize / cellTexture->getSize().y });
-//					window->draw(sprite);
-//				}
-//			}
-//			else {
-//				if (deadCellTexture) {
-//					sf::Sprite deadSprite(*deadCellTexture);
-//					deadSprite.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
-//					deadSprite.setScale({ cellSize / deadCellTexture->getSize().x, cellSize / deadCellTexture->getSize().y });
-//					window->draw(deadSprite);
-//				}
-//				else {
-//					cell.setFillColor(sf::Color(15, 15, 20));
-//					window->draw(cell);
-//				}
-//			}
-//
-//
-//			/*if (_generation[row][col]) {
-//				if (paused)
-//					cell.setFillColor(sf::Color(80, 170, 180));
-//				else
-//					cell.setFillColor(sf::Color(0, 200, 255));
-//			}
-//			else {
-//				cell.setFillColor(sf::Color(15, 15, 20, 200));
-//
-//			}
-//
-//			window->draw(cell);*/
-//		}
-//	}
-//}
+
 
 void game_of_life::reset() {
 	for (int row = 0; row < ROWS; ++row)
