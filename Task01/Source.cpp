@@ -30,6 +30,7 @@ void setup_ui(sf::Text& title, sf::Text& instructions, sf::Font& font, sf::Rende
 
 int main()
 {
+
 	bool isMuted = false;
 
 
