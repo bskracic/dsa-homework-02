@@ -12,9 +12,9 @@ bool game_of_life::random_value()
 bool game_of_life::cell_taken(int i, int j)
 {
 
-	if (0 <= i and i < ROWS)
+	if (0 <= i and i < activeRows)
 	{
-		if (0 <= j and j < COLS)
+		if (0 <= j and j < activeCols)
 		{
 			return _generation[i][j];
 
@@ -30,10 +30,10 @@ game_of_life::game_of_life()
 {
 	srand(time(nullptr));
 
-	for (int row = 0; row < ROWS; row++)
+	for (int row = 0; row < activeRows; row++)
 	{
 
-		for (int col = 0; col < COLS; col++)
+		for (int col = 0; col < activeCols; col++)
 		{
 			_generation[row][col] = random_value();
 
@@ -47,11 +47,11 @@ game_of_life::game_of_life()
 void game_of_life::next_generation()
 {
 
-	for (int row = 0; row < ROWS; row++)
+	for (int row = 0; row < activeRows; row++)
 	{
 
 
-		for (int col = 0; col < COLS; col++)
+		for (int col = 0; col < activeCols; col++)
 		{
 			int counter = 0;
 
@@ -97,8 +97,8 @@ void game_of_life::next_generation()
 		}
 	}
 
-	for (int row = 0; row < ROWS; row++)
-		for (int col = 0; col < COLS; col++)
+	for (int row = 0; row < activeRows; row++)
+		for (int col = 0; col < activeCols; col++)
 			_generation[row][col] = _next_generation[row][col];
 
 
@@ -121,19 +121,36 @@ void game_of_life::set_alt_cell_texture(sf::Texture* texture) {
 
 
 
+
+
 void game_of_life::toggle_icon_mode() {
 	useIcons = !useIcons;
+
+	if (useIcons) {
+		cellSize = 60.f;
+		activeCols = ICON_MODE_COLS;
+		activeRows = ICON_MODE_ROWS;
+		std::cout << "Icon mode ON"<<std::endl;
+	}
+	else {
+		cellSize = 15.f;
+		activeCols = COLOR_MODE_COLS;
+		activeRows = COLOR_MODE_ROWS;
+		std::cout << "Color mode ON"<<std::endl;
+		reset();
+	}
 }
+
 
 
 void game_of_life::draw(bool  paused) {
 	if (!window) return;
 
-	float offsetX = (WINDOW_WIDTH - COLS * cellSize) / 2.f;
-	float offsetY = (WINDOW_HEIGHT - ROWS * cellSize) / 2.f;
+	float offsetX = (WINDOW_WIDTH - activeCols * cellSize) / 2.f;
+	float offsetY = (WINDOW_HEIGHT - activeRows * cellSize) / 2.f;
 
-	for (int row = 0; row < ROWS; ++row) {
-		for (int col = 0; col < COLS; ++col) {
+	for (int row = 0; row < activeRows; ++row) {
+		for (int col = 0; col < activeCols; ++col) {
 			sf::RectangleShape cell(sf::Vector2f(cellSize - 1, cellSize - 1));
 			cell.setPosition({ col * cellSize + offsetX, row * cellSize + offsetY });
 			cell.setOutlineThickness(1);
@@ -179,8 +196,8 @@ void game_of_life::draw(bool  paused) {
 
 
 void game_of_life::reset() {
-	for (int row = 0; row < ROWS; ++row)
-		for (int col = 0; col < COLS; ++col)
+	for (int row = 0; row < activeRows; ++row)
+		for (int col = 0; col < activeCols; ++col)
 			_generation[row][col] = random_value();
 }
 

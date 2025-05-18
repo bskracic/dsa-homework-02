@@ -10,13 +10,32 @@
 class game_of_life {
 private:
 
-    static const unsigned int COLS = 26;
+  /*  static const unsigned int COLS = 26;
     static const unsigned int ROWS = 14;
     float cellSize = 60.f;
 
 
     bool _generation[ROWS][COLS];
-    bool _next_generation[ROWS][COLS];
+    bool _next_generation[ROWS][COLS];*/
+
+    static const unsigned int COLOR_MODE_COLS = 104;
+    static const unsigned int COLOR_MODE_ROWS = 56;
+
+
+    static const unsigned int ICON_MODE_COLS = 26;
+    static const unsigned int ICON_MODE_ROWS = 14;
+
+    static const unsigned int MAX_COLS = COLOR_MODE_COLS;
+    static const unsigned int MAX_ROWS = COLOR_MODE_ROWS;
+
+    float cellSize = 60.f;
+
+    unsigned int activeCols = ICON_MODE_COLS;
+    unsigned int activeRows = ICON_MODE_ROWS;
+
+    bool _generation[MAX_ROWS][MAX_COLS];
+    bool _next_generation[MAX_ROWS][MAX_COLS];
+
 
     sf::RenderWindow* window = nullptr; 
 

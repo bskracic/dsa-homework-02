@@ -2,17 +2,27 @@
 #include "game_of_life.h"
 #include <optional>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game of Life");
-	window.setFramerateLimit(3);
+	window.setFramerateLimit(5);
 
 	sf::Font font;
 	if (!font.openFromFile("C:/Windows/Fonts/BAUHS93.TTF")) {
 		std::cout << "Failed to load font" << std::endl;
 		return -1;
 	}
+
+	//sf::Music music;
+	//if (!music.openFromFile("Resources/march-of-the-troopers-star-wars-style-cinematic-music-207056.mp3")) {
+	//	std::cerr << "Failed to load music!"<<std::endl;
+	//}
+	//music.setLooping(true);
+	//music.setVolume(70.f); // optional
+	//music.play();
+
 
 	/*sf::Texture backgroundTexture;
 	if (!backgroundTexture.loadFromFile("Resources/Neon_Purple.png")) {
@@ -53,7 +63,7 @@ int main()
 	bool darkMode = true;
 
 	sf::Texture cellTexture;
-	if (!cellTexture.loadFromFile("Resources/Millennium_Falcon_transparent .png")) {
+	if (!cellTexture.loadFromFile("Resources/Millennium_Falcon_transparent02.png")) {
 		std::cout << "Failed to load cell image" << std::endl;
 		return -1;
 	}
@@ -92,7 +102,7 @@ int main()
 	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
 
-	sf::Text instructions(font, "P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      L - Light/Dark Mode      Esc - Exit", 26);
+	sf::Text instructions(font, " P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      L - Light/Dark Mode      Esc - Exit", 26);
 	//if (darkMode)
 	//{
 	//	instructions.setFillColor(sf::Color(180, 180, 180));
@@ -101,7 +111,7 @@ int main()
 	//{
 	//	instructions.setFillColor(sf::Color(255, 255, 255));
 	//}
-	instructions.setPosition({ 160.f, 80.f });
+	instructions.setPosition({ 180.f, 80.f });
 
 	game_of_life game;
 	game.set_window(&window);
