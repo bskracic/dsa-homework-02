@@ -184,7 +184,7 @@ void game_of_life::draw(bool  paused) {
 					window->draw(deadSprite);
 				}
 				else {
-					cell.setFillColor(sf::Color(15, 15, 20, 140));
+					cell.setFillColor(sf::Color(15, 15, 20, 100));
 					window->draw(cell);
 				}
 			}

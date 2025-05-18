@@ -6,6 +6,28 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
+sf::Texture darkTexture;
+sf::Texture lightTexture;
+sf::Texture cellTexture;
+sf::Texture tieTexture;
+sf::Texture deadTexture;
+
+void setup_ui(sf::Text& title, sf::Text& instructions, sf::Font& font, sf::RenderWindow& window) {
+	title.setFont(font);
+	title.setString("Game of Life");
+	title.setCharacterSize(50);
+	title.setFillColor(sf::Color::White);
+	sf::FloatRect bounds = title.getLocalBounds();
+	title.setOrigin({ bounds.getCenter().x, 0.f });
+	title.setPosition({ window.getSize().x / 2.f, 20.f });
+
+	instructions.setFont(font);
+	instructions.setString(" P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      L - Light/Dark Mode      M - Mute      Esc - Exit");
+	instructions.setCharacterSize(26);
+	instructions.setPosition({ 180.f, 80.f });
+}
+
+
 int main()
 {
 	bool isMuted = false;
@@ -44,13 +66,11 @@ int main()
 	}
 
 	
-	sf::Texture darkTexture;
 	if (!darkTexture.loadFromFile("Resources/DarkMode.jpg")) {
 		std::cout << "Failed to load dark background texture\n";
 		return -1;
 	}
 
-	sf::Texture lightTexture;
 	if (!lightTexture.loadFromFile("Resources/eva-kedves-1-vader-arrives.jpg")) {
 		std::cout << "Failed to load light background texture\n";
 		return -1;
@@ -71,14 +91,12 @@ int main()
 
 	bool darkMode = true;
 
-	sf::Texture cellTexture;
 	if (!cellTexture.loadFromFile("Resources/Millennium_Falcon_transparent02.png")) {
 		std::cout << "Failed to load cell image\n";
 		return -1;
 	}
 	cellTexture.setSmooth(true);
 
-	sf::Texture tieTexture;
 	if (!tieTexture.loadFromFile("Resources/TIE_Fighter_transparent.png")) {
 		std::cerr << "Failed to load TIE Fighter texture\n";
 		return -1;
@@ -87,7 +105,6 @@ int main()
 	tieTexture.setSmooth(true);
 
 
-	sf::Texture deadTexture;
 	if (!deadTexture.loadFromFile("Resources/Blackhole_transparent.png")) {
 		std::cerr << "Failed to load dead cell image\n";
 		return -1;
@@ -103,17 +120,12 @@ int main()
 	bool stepOnce = false;
 
 
-	sf::Text title(font, "Game of Life", 50);
-	title.setFillColor(sf::Color::White);
-
-	sf::FloatRect bounds = title.getLocalBounds();
-	title.setOrigin({ bounds.getCenter().x, 0.f });
-	title.setPosition({ window.getSize().x / 2.f, 20.f });
+	auto* title = new sf::Text(font, "", 50);
+	auto* instructions = new sf::Text(font, "", 26);
+	setup_ui(*title, *instructions, font, window);
 
 
-	sf::Text instructions(font, " P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      L - Light/Dark Mode      M - Mute      Esc - Exit", 26);
 
-	instructions.setPosition({ 180.f, 80.f });
 
 	game_of_life game;
 	game.set_window(&window);
@@ -178,17 +190,18 @@ int main()
 		window.draw(darkMode ? darkSprite : lightSprite);
 		window.draw(headerBar);
 
-		window.draw(title);
+		window.draw(*title);
 		game.draw(paused);
-		window.draw(instructions);
 		if (darkMode)
 		{
-			instructions.setFillColor(sf::Color(180, 180, 180));
+			instructions->setFillColor(sf::Color(180, 180, 180));
 		}
 		else if (!darkMode)
 		{
-			instructions.setFillColor(sf::Color(255, 255, 255));
+			instructions->setFillColor(sf::Color(255, 255, 255));
 		}
+		window.draw(*instructions);
+
 		if (paused) {
 			sf::Text pausedText(font, "PAUSED", 48);
 			if (!darkMode)
@@ -222,6 +235,8 @@ int main()
 	ma_sound_uninit(&music);
 	ma_engine_uninit(&engine);
 
+	delete title;
+	delete instructions;
 
 	return 0;
 }
