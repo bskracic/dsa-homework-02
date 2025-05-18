@@ -25,6 +25,19 @@ int main()
 		window.getSize().y / static_cast<float>(backgroundTexture.getSize().y)
 	));
 
+	sf::Texture cellTexture;
+	if (!cellTexture.loadFromFile("Resources/Saturn2.png")) {
+		std::cout << "Failed to load cell image" << std::endl;
+		return -1;
+	}
+	sf::Texture deadTexture;
+	if (!deadTexture.loadFromFile("Resources/Blackhole.png")) {
+		std::cerr << "Failed to load dead cell image" << std::endl;
+		return -1;
+	}
+
+
+
 
 
 	bool paused = true;
@@ -39,7 +52,7 @@ int main()
 	title.setPosition({ window.getSize().x / 2.f, 20.f });
 
 
-	sf::Text instructions(font, "P - Play / Pause      N - Next Step      R - Reset Grid      Esc - Exit", 26);
+	sf::Text instructions(font, "P - Play / Pause      N - Next Step      R - Reset Grid      I - Icon Mode      Esc - Exit", 26);
 	instructions.setFillColor(sf::Color(180, 180, 180));
 	instructions.setPosition({ 160.f, 80.f });
 
@@ -72,20 +85,27 @@ int main()
 					stepOnce = true;
 					std::cout << "Step forward" << std::endl;
 				}
+				else if (key->scancode == sf::Keyboard::Scan::I) {
+					game.toggle_icon_mode();
+					std::cout << "Toggled icon mode"<<std::endl;
+				}
+
 
 			}
 
 
 
 		}
-
+		//cell textures:)
+		game.set_cell_texture(&cellTexture);
+		game.set_dead_cell_texture(&deadTexture);
 
 		window.clear();
-		sf::RectangleShape headerBar;
+	/*	sf::RectangleShape headerBar;
 		headerBar.setSize(sf::Vector2f(window.getSize().x, 80));
-		headerBar.setFillColor(sf::Color(20, 20, 20));
+		headerBar.setFillColor(sf::Color(20, 20, 20));*/
 		window.draw(backgroundSprite);  
-		window.draw(headerBar);
+		//window.draw(headerBar);
 
 		window.draw(title);
 		game.draw(paused);
