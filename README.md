@@ -30,6 +30,6 @@ Includes animated textures, dark/light modes, and looping Star Wars-inspired mus
 
 ## Credits
 
-- Icons and textures by user  
+- Generated Icons and textures  
 - Star Wars music (free-use and self-converted WAV)
 
