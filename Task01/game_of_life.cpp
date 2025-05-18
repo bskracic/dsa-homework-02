@@ -130,13 +130,13 @@ void game_of_life::toggle_icon_mode() {
 		cellSize = 60.f;
 		activeCols = ICON_MODE_COLS;
 		activeRows = ICON_MODE_ROWS;
-		std::cout << "Icon mode ON"<<std::endl;
+		std::cout << "Icon mode ON\n";
 	}
 	else {
 		cellSize = 15.f;
 		activeCols = COLOR_MODE_COLS;
 		activeRows = COLOR_MODE_ROWS;
-		std::cout << "Color mode ON"<<std::endl;
+		std::cout << "Color mode ON\n";
 		reset();
 	}
 }
@@ -184,7 +184,7 @@ void game_of_life::draw(bool  paused) {
 					window->draw(deadSprite);
 				}
 				else {
-					cell.setFillColor(sf::Color(15, 15, 20, 200));
+					cell.setFillColor(sf::Color(15, 15, 20, 140));
 					window->draw(cell);
 				}
 			}
